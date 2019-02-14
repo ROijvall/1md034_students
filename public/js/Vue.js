@@ -17,21 +17,44 @@ function burgerArray() {
     return burgers;
 }
 
+var socket = io();
+
 var app = new Vue({
-    el:'#app',
+    el: '#app',
     data: {
         picked: [],
         name: '',
-        address: '',
         email: '',
         payment: 'Credit card',
         gender: 'Male',
+        count: 0,
         burgers: food,
-        orderList:[]
-    },
+        orderItems: [],
+        orders: {}
+        },
     methods: {
-        markDone: function(){
-            this.orderList.push(this.picked, this.name, this.address, this.email, this.payment, this.gender);
+        getNext: function () {
+            var lastOrder = this.count;
+            this.count +=1;
+            return lastOrder + 1;
+        },
+
+        addOrder: function (event) {
+            socket.emit("addOrder", {   orderId: this.getNext(),
+                                        details: this.orders[0].details,
+                                        customerInfo: [this.name, this.email, this.payment, this.gender], 
+                                        orderItems: this.picked,
+                                    });
+        },
+        displayOrder: function (event) {
+            var offset = {
+                x: event.currentTarget.getBoundingClientRect().left,
+                y: event.currentTarget.getBoundingClientRect().top
+            };
+            Vue.set(this.orders, 0, {details: {
+                x: event.clientX - 10 - offset.x,
+                y: event.clientY - 10 - offset.y
+            }});
         }
     }
 });

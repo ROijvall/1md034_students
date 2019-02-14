@@ -1,95 +1,111 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" href="css/deli-very.css">
 <head>
     <title>Bastu Burgers</title>
     <meta charset="utf-8"/>
     <script type="text/javascript" src="js/menu.js"></script>
     <script src="https://vuejs.org/js/vue.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <!--<script src="./js/deli-very.js" defer></script>-->
     <script src="./js/js_script.js" defer></script>
     <script src="./js/Vue.js" defer></script>
 </head>
-<body>
+<section>
     <header>
         <h1 id="headertext">Välkommen till Bastu Burger</h1>
     <img id="abs" src=https://images.ctfassets.net/ayu9mtk4rn0z/asset-3mcfs8fmjgos1dia/bab212062d1d4e79d266fea866631b73/Header_sauna.jpg?fm=jpg&fl=progressive&fit=fill&q=76&w=1232&h=496>
     </header>
     <div id="app">
-        <section id="burgers">
-            <section id="burgerheader">
-                <h3>Select burger</h3>
-                <p>Here are our options:</p>
-            </section>
-            <div class="wrapper">
-                    <div class="box" id="burgerbox" v-for="burger in burgers">
-                    <h4>{{burger.name}}</h4>
-                            <img v-bind:src="burger.img" width="200" height="133">
-                        <div>
-                            <input type="checkbox" v-bind:name="burger.name" v-bind:value="burger.name" v-model="picked">
-                            <label v-bind:for="burger.name">Order this!</label>
-                        </div>
-                        <ul>
-                            <li>{{burger.kCal}} calories</li>
-                            <li>{{burger.fact}}</li>
-                            <li v-if="burger.lactose && burger.gluten">Contains <b>lactose</b> and <b>gluten</b>!</li>
-                            <li v-if="burger.lactose && !burger.gluten">Contains <b>lactose</b>!</li>
-                            <li v-if="burger.gluten && !burger.lactose">Contains <b>gluten</b>!</li>
-                            </ul>
-                    </div>
+    <section id="burgers">
+        <section id="burgerheader">
+            <h3>Select burger</h3>
+            <p>Here are our options:</p>
+        </section>
+        <div class="wrapper">
+            <div class="box" id="burgerbox" v-for="burger in burgers">
+                <h4>{{burger.name}}</h4>
+                <img v-bind:src="burger.img" width="200" height="133">
+                <div>
+                    <input type="checkbox" v-bind:name="burger.name" v-bind:value="burger.name" v-model="picked">
+                    <label v-bind:for="burger.name">Order this!</label>
+                </div>
+                <ul>
+                    <li>{{burger.kCal}} calories</li>
+                    <li>{{burger.fact}}</li>
+                    <li v-if="burger.lactose && burger.gluten">Contains <b>lactose</b> and <b>gluten</b>!</li>
+                    <li v-if="burger.lactose && !burger.gluten">Contains <b>lactose</b>!</li>
+                    <li v-if="burger.gluten && !burger.lactose">Contains <b>gluten</b>!</li>
+                </ul>
             </div>
+        </div>
     </section>
-    <section class="order">
-    <h3>Customer information</h3>
-    <p>This is where you provide necessary information</p>
-    <h4>Delivery information</h4>
+    <div class="order">
+        <h3>Customer information</h3>
+        <p>This is where you provide necessary information</p>
+        <h4>Delivery information</h4>
         <form>
-    <p>
-        <label for="fullname">Full name</label><br>
-        <input type="text" id="fullname" name="fn" required="required" placeholder="Full name" v-model="name">
-    </p>
+            <p>
+                <label for="fullname">Full name</label><br>
+                <input type="text" id="fullname" name="fn" required="required" placeholder="Full name" v-model="name">
+            </p>
+            <!--
             <p>
                 <label for="address">Address</label><br>
                 <input type="text" id="address" name="address" placeholder="Address" v-model="address">
             </p>
-    <p>
-        <label for="email">Email </label><br>
-        <input type="email" id="email" name="em" required="required" placeholder="E-mail address" v-model="email">
-    </p>
-    <p>
-        <label for="paymentdetails">Payment options</label><br>
-        <select id="paymentdetails" v-model="payment" name="rcp">
-            <option>Credit card</option>
-            <option>Cash</option>
-            <option>Invoice</option>
-            <option>Loan</option>
-        </select>
-    </p>
-    <p>Gender</p>
-    <div>
-        <input type="radio" id="Male" name = "gender" value="Male" v-model="gender" checked>
-        <label for="Male">Male</label>
-    </div>
+            -->
+            <p>
+                <label for="email">Email </label><br>
+                <input type="email" id="email" name="em" required="required" placeholder="E-mail address" v-model="email">
+            </p>
+            <p>
+                <label for="paymentdetails">Payment options</label><br>
+                <select id="paymentdetails" v-model="payment" name="rcp">
+                    <option>Credit card</option>
+                    <option>Cash</option>
+                    <option>Invoice</option>
+                    <option>Loan</option>
+                </select>
+            </p>
+            <p>Gender</p>
+            <div>
+                <input type="radio" id="Male" name = "gender" value="Male" v-model="gender" checked>
+                <label for="Male">Male</label>
+            </div>
 
-    <div>
-        <input type="radio" id="Female" name = "gender" value="Female" v-model="gender">
-        <label for="Female">Female</label>
-    </div>
+            <div>
+                <input type="radio" id="Female" name = "gender" value="Female" v-model="gender">
+                <label for="Female">Female</label>
+            </div>
 
-    <div>
-        <input type="radio" id="Non-binary" name = "gender" value="Non-binary" v-model="gender">
-        <label for="Non-binary">Non-binary</label>
+            <div>
+                <input type="radio" id="Non-binary" name = "gender" value="Non-binary" v-model="gender">
+                <label for="Non-binary">Non-binary</label>
+            </div>
+            <div>
+                <input type="radio" id="Undisclosed" name = "gender" value="Why would you need my gender?!" v-model="gender">
+                <label for="Undisclosed">Why would you need my gender?!</label>
+            </div>
+        </form>
+        <div class="view-box">
+            <div id="dots" v-on:click="displayOrder">
+                <div
+                        v-for="order in orders"
+                        v-bind:style="{ left: order.details.x + 'px', top: order.details.y + 'px'}">
+                    T
+                </div>
+            </div>
+        </div>
+    <button v-on:click="addOrder"><img src="https://openclipart.org/image/90px/svg_to_png/312459/1545571884.png" width="40" height="20"> Submit</button>
+    <!--<p v-for="order in orderList">{{order}}</p>-->
     </div>
-    <div>
-        <input type="radio" id="Undisclosed" name = "gender" value="Why would you need my gender?!" v-model="gender">
-    <label for="Undisclosed">Why would you need my gender?!</label>
     </div>
-</form>
-    <button v-on:click="markDone"><img src="https://openclipart.org/image/90px/svg_to_png/312459/1545571884.png" width="40" height="20"> Submit</button>
-    <p v-for="order in orderList">{{order}}</p>
     </section>
-    </div>
     </body>
     </main>
  <hr>
  <p>bastu trademarked</p>
 </html>
+<p></p>

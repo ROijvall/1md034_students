@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,17 +10,18 @@
   <script src="js/dispatcher.js" defer></script>
 </head>
 <body>
-  <div id="orders">
-    <div id="orderList">
-      <div v-for="(order, key) in orders">
-        #{{ key }}: {{ order.orderItems.join(", ") }}
-      </div>
-    </div>
-    <div id="dots">
-        <div v-for="(order, key) in orders" v-bind:style="{ left: order.details.x + 'px', top: order.details.y + 'px'}">
-          {{ key }}
-        </div>
+<div id="orders">
+  <div id="orderList">
+    <div v-for="(order, key) in orders">
+      #{{ key }}: {{ order.orderItems.join(", ") }} <br>
+      <i>{{order.customerInfo[0] + " (" + order.customerInfo[1] + ", " + order.customerInfo[2] + ", " + order.customerInfo[3] +")"  }}</i>
     </div>
   </div>
+  <div id="dots">
+    <div v-for="(order, key) in orders" v-bind:style="{ left: order.details.x + 'px', top: order.details.y + 'px'}">
+      {{ key }}
+    </div>
+  </div>
+</div>
 </body>
 </html>
